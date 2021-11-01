@@ -9,17 +9,17 @@ import (
 
 func TestPut(t *testing.T) {
 	q := NewQueue()
-	q.Put(Item{1})
-	if q.Get().Val.(int) != 1 {
+	q.Put(1)
+	if q.Get().(int) != 1 {
 		t.Fatal("wrong item in queue")
 	}
 }
 
 func TestPutMultiple(t *testing.T) {
 	q := NewQueue()
-	q.Put(Item{1})
-	q.Put(Item{2})
-	first, second := q.Get().Val.(int), q.Get().Val.(int)
+	q.Put(1)
+	q.Put(2)
+	first, second := q.Get().(int), q.Get().(int)
 	if first != 1 || second != 2 {
 		t.Fatal("wrong item in queue or wrong order")
 	}
@@ -50,7 +50,7 @@ func TestGetMany(t *testing.T) {
 		return c
 	}
 
-	q.Put(Item{1})
+	q.Put(1)
 
 	select {
 	case <-result2():
@@ -59,14 +59,14 @@ func TestGetMany(t *testing.T) {
 	}
 
 	// this call unblocks first GetMany call and empties queue
-	q.Put(Item{2})
+	q.Put(2)
 	// Put enough items in queue for result2 not to block
-	q.Put(Item{3})
-	q.Put(Item{4})
+	q.Put(3)
+	q.Put(4)
 
 	select {
 	case res := <-result2():
-		third, fourth := res[0].Val.(int), res[1].Val.(int)
+		third, fourth := res[0].(int), res[1].(int)
 		if third != 3 || fourth != 4 {
 			t.Fatal("wrong item in queue or wrong order")
 		}
@@ -85,14 +85,14 @@ func TestConcurrent(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		go func(i int) {
 			defer wg.Done()
-			q.Put(Item{i})
+			q.Put(i)
 		}(i)
 	}
 
 	for i := 0; i < 1000; i++ {
 		go func() {
 			defer wg.Done()
-			sum += q.Get().Val.(int)
+			sum += q.Get().(int)
 		}()
 	}
 

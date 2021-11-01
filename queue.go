@@ -4,9 +4,7 @@
 // (https://www.youtube.com/watch?v=5zXAHh5tJqQ)
 package queue
 
-type Item struct {
-	Val interface{}
-}
+type Item interface{}
 
 // This type represents request for content from queue.
 // When n number of items become avaliable in a queue
