@@ -5,7 +5,7 @@
 package queue
 
 type Item struct {
-	val interface{}
+	Val interface{}
 }
 
 // This type represents request for content from queue.
